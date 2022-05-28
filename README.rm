@@ -1,0 +1,12 @@
+find user
+if have user 
+    if this user have room , join this room 
+    if not make room and fill 2 people 
+if not 
+    make room and join
+
+when signaling change 2 people to connecting
+
+when leave and disconnect change to watting
+
+make promiss in pool
