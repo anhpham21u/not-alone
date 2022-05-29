@@ -8,6 +8,14 @@ const socketIO = require("socket.io");
 // オブジェクト
 const app = express();
 const server = http.Server(app);
+
+// const fs = require('fs');
+// const server = require('https').createServer({
+//     key: fs.readFileSync('./privatekey.pem'),
+//     cert: fs.readFileSync('./cert.pem'),
+// }, app)
+
+
 const io = socketIO(server);
 
 // 定数

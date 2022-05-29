@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>My Video Chat</title>
+        <title>Not Alone</title>
         <style type="text/css">
             input:read-only,
             textarea:read-only {
@@ -28,76 +28,108 @@
             display: flex;
             flex-direction: column;
             width: 100%;
-            height: 100%;
+            height: 100vh;
             margin: 0;
         "
     >
-        <h1 style="margin: 8px">My Video Chat</h1>
+        <div style="display: none">
+            <input
+                type="checkbox"
+                id="checkbox_camera"
+                onclick="onclickCheckbox_CameraMicrophone()"
+                checked
+            />Camera
+            <input
+                type="checkbox"
+                id="checkbox_microphone"
+                onclick="onclickCheckbox_CameraMicrophone()"
+                checked
+            />Microphone
+            <br />
+            Room Name :
+            <input type="text" id="text_roomname" readonly="readonly" />
+            <br />
+        </div>
+        <div id="div_userinfo" style="display: flex">
+            <div border="1px solid black" style="flex: 1">
+                <input
+                    style="display: none"
+                    type="text"
+                    id="text_username"
+                    readonly="readonly"
+                /><video
+                    id="video_local"
+                    style="
+                        border: 1px solid black;
+                        max-height: 100%;
+                        max-width: 50vw;
+                        width: 99%;
+                    "
+                    autoplay
+                ></video>
+            </div>
+        </div>
 
-        <div style="flex: 1">
-            <div id="div_chat_screen" style="margin: 8px">
-                <div style="display: none;">
-                    <input
-                        type="checkbox"
-                        id="checkbox_camera"
-                        onclick="onclickCheckbox_CameraMicrophone()"
-                        checked
-                    />Camera
-                    <input
-                        type="checkbox"
-                        id="checkbox_microphone"
-                        onclick="onclickCheckbox_CameraMicrophone()"
-                        checked
-                    />Microphone
-                    <br />
-                    Room Name :
-                    <input type="text" id="text_roomname" readonly="readonly" />
-                    <br />
-                </div>
-                <div id="div_userinfo" style="display: flex; flex-wrap: wrap">
-                    <div border="1px solid black">
-                        <input
-                        style="display: none;"
-                            type="text"
-                            id="text_username"
-                            readonly="readonly"
-                        /><br /><video
-                            id="video_local"
-                            width="320"
-                            height="240"
-                            style="border: 1px solid black"
-                            autoplay
-                        ></video>
-                    </div>
-                </div>
-
-                <!-- エンターキーによるボタン押下を行うために、<button>ではなく<form>と<input type="submit">を使用。
+        <!-- エンターキーによるボタン押下を行うために、<button>ではなく<form>と<input type="submit">を使用。
             ボタン押下(=submit)時にページリロードが行われないように、onsubmitの設定の最後に"return false;"を追加。-->
+        <div style="flex: 1; display: flex">
+            <div
+                style="
+                    flex: 1;
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+                "
+            >
+                <button
+                    id="btnStop"
+                    onclick="onclickButton_LeaveChat()"
+                    style="flex: 1; height: 80px; margin: 5px"
+                >
+                    Stop
+                </button>
+                <button
+                    id="btnStart"
+                    onclick="onsubmitButton_Join()"
+                    style="flex: 1; height: 80px; margin: 5px"
+                >
+                    Start
+                </button>
+                <button
+                    id="btnNext"
+                    onclick="onclickButton_Next()"
+                    style="flex: 1; height: 80px; margin: 5px"
+                >
+                    Next
+                </button>
+            </div>
+
+            <div
+                style="
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    padding: 5px;
+                "
+            >
                 <form
                     action=""
+                    style="display: flex"
                     onsubmit="onsubmitButton_SendMessage(); return false;"
                 >
                     <input
                         type="text"
+                        style="width: 100%"
                         id="text_message_for_send"
-                        size="40"
                     /><input type="submit" value="Send message" />
                 </form>
                 <textarea
                     id="textarea_message_received"
-                    rows="10"
-                    cols="60"
+                    style="height: 90%; padding: 5px; margin-top: 5px"
                     readonly="readonly"
                 ></textarea>
-
-                <br />
-                <button onclick="onclickButton_LeaveChat()">Leave Chat.</button>
-                <button onclick="onsubmitButton_Join()">Join.</button>
-                <button onclick="onclickButton_Next()">next.</button>
-
             </div>
         </div>
-
         <!-- Script -->
         <script src="/socket.io/socket.io.js"></script>
         <script src="./client.js"></script>

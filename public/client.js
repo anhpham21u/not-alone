@@ -2,6 +2,12 @@
 
 // ↓↓↓グローバル変数↓↓↓
 
+const g_btnStart = document.getElementById("btnStart");
+const g_btnStop = document.getElementById("btnStop");
+const g_btnNext = document.getElementById("btnNext");
+
+
+
 const g_elementDivJoinScreen = document.getElementById("div_join_screen");
 const g_elementDivChatScreen = document.getElementById("div_chat_screen");
 
@@ -35,6 +41,9 @@ const g_socket = io.connect();
 // ↓↓↓UIから呼ばれる関数↓↓↓
 
 window.addEventListener("load", (event) => {
+    g_btnNext.disabled = true;
+    g_btnStop.disabled = true;
+    
     onclickCheckbox_CameraMicrophone();
     return ""; // Chrome 以外では、return を設定する必要がある
 });
@@ -52,8 +61,12 @@ window.addEventListener("beforeunload", async (event) => {
 
 // 「Join」ボタンを押すと呼ばれる関数
 function onsubmitButton_Join() {
-    console.log("UI Event : 'Join' button clicked.");
+    g_btnStart.disabled = true;
+    g_btnNext.disabled = false;
+    g_btnStop.disabled = false;
 
+    console.log("UI Event : 'Join' button clicked.");
+    g_elementTextareaMessageReceived.value = "";
     // ユーザー名
     let strInputUserName = "test";
     console.log("- User name :", strInputUserName);
@@ -202,6 +215,7 @@ function onsubmitButton_SendMessage() {
     }
 
     // メッセージをDataChannelを通して相手に直接送信
+    console.log("size",g_mapRtcPeerConnection.size)
     g_mapRtcPeerConnection.forEach((rtcPeerConnection) => {
         console.log("- Send Message through DataChannel");
         rtcPeerConnection.datachannel.send(
@@ -214,7 +228,7 @@ function onsubmitButton_SendMessage() {
 
     // 送信メッセージをメッセージテキストエリアへ追加
     g_elementTextareaMessageReceived.value =
-        g_elementTextMessageForSend.value +
+        "you : " + g_elementTextMessageForSend.value +
         "\n" +
         g_elementTextareaMessageReceived.value; // 一番上に追加
     //g_elementTextareaMessageReceived.value += g_elementTextMessageForSend.value + "\n"; // 一番下に追加
@@ -223,6 +237,10 @@ function onsubmitButton_SendMessage() {
 
 // 「Leave Chat.」ボタンを押すと呼ばれる関数
 async function onclickButton_LeaveChat() {
+    g_btnStart.disabled = false;
+    g_btnNext.disabled = true;
+    g_btnStop.disabled = true;
+
     console.log("UI Event : 'Leave Chat.' button clicked.");
 
     g_mapRtcPeerConnection.forEach((rtcPeerConnection) => {
@@ -388,7 +406,7 @@ function setupDataChannelEventHandler(rtcPeerConnection) {
             // 受信メッセージをメッセージテキストエリアへ追加
             let strMessage = objData.data;
             g_elementTextareaMessageReceived.value =
-                strMessage + "\n" + g_elementTextareaMessageReceived.value; // 一番上に追加
+                "stranger : " + strMessage + "\n" + g_elementTextareaMessageReceived.value; // 一番上に追加
             //g_elementTextareaMessageReceived.value += strMessage + "\n";  // 一番下に追加
         } else if ("offer" === objData.type) {
             // 受信したOfferSDPの設定とAnswerSDPの作成
@@ -879,6 +897,7 @@ function setStreamToElement(elementMedia, stream) {
 // リモート情報表示用のHTML要素の追加
 function appendRemoteInfoElement(strRemoteSocketID, strUserName) {
     // <div border="1 solid #000000"><input type="text" id="text_remote_username" readonly="readonly"><br /><video id="video_remote" width="320" height="240" style="border: 1px solid black;"></video><audio id="audio_remote"></audio></div>
+    g_elementTextareaMessageReceived.value = "";
 
     // IDの作成
     let strElementTextID = "text_" + strRemoteSocketID;
@@ -897,8 +916,8 @@ function appendRemoteInfoElement(strRemoteSocketID, strUserName) {
     // video HTML要素の作成
     let elementVideo = document.createElement("video");
     elementVideo.id = strElementVideoID;
-    elementVideo.width = "320";
-    elementVideo.height = "240";
+    //elementVideo.width = "320";
+    elementVideo.style = "max-height: 100%;max-width: 100%;width: 99%;";
     elementVideo.style.border = "1px solid black";
     elementVideo.autoplay = true;
 
@@ -910,11 +929,11 @@ function appendRemoteInfoElement(strRemoteSocketID, strUserName) {
     // div HTML要素の作成
     let elementDiv = document.createElement("div");
     elementDiv.id = strElementTableID;
-    elementDiv.border = "1px solid black";
+    //elementDiv.border = "1px solid black";
+    elementDiv.style = "flex: 1";
 
     // 要素の配置
     elementDiv.appendChild(elementText); // ユーザー名
-    elementDiv.appendChild(document.createElement("br")); // 改行
     elementDiv.appendChild(elementVideo); // Video
     elementDiv.appendChild(elementAudio); // Audio
     g_elementDivUserInfo.appendChild(elementDiv);
@@ -962,6 +981,10 @@ const leavePromise = () =>
     });
 
 async function onclickButton_Next() {
+    g_btnStart.disabled = true;
+    g_btnNext.disabled = false;
+    g_btnStop.disabled = false;
+
     await onclickButton_LeaveChat();
     onsubmitButton_Join();
 }
