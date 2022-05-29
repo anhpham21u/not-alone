@@ -928,7 +928,7 @@ function appendRemoteInfoElement(strRemoteSocketID, strUserName) {
     elementVideo.style.border = "1px solid black";
     elementVideo.autoplay = true;
     elementVideo.playsInline = true;
-    
+    elementVideo.controls=false;
 
     // audio HTML要素の作成
     let elementAudio = document.createElement("audio");
@@ -969,11 +969,7 @@ function removeRemoteInfoElement(strRemoteSocketID) {
     let elementTable = document.getElementById(strElementTableID);
 
     if (!elementTable) {
-        console.error(
-            "Unexpected : Remote Video Element is not exist. RemoteSocketID = ",
-            strRemoteSocketID
-        );
-    }
+return;    }
 
     // 要素の削除
     g_elementDivUserInfo.removeChild(elementTable);

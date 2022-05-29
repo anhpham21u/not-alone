@@ -12,6 +12,9 @@
             html {
                 height: 100%;
             }
+          video {
+        object-fit: cover;
+}
 
             #div_join_screen {
                 width: 100%;
@@ -22,6 +25,7 @@
                 background-color: #888;
             }
 
+
             @media screen and (min-width: 600px) {
                 .wrapper {
                     flex-direction: column;
@@ -29,12 +33,18 @@
                 video {
                     max-width: 100vw !important;
                     width: 100% !important;
+                      max-height: 40vh !important;
                 }
                 .btnWrapper {
                     flex: 0 !important;
-                    padding-top: 10px;
-                    padding-bottom: 10px;
+                    padding-top: 20px;
+                    padding-bottom: 20px;
                 }
+              button,textarea  {font-size: 150%;}
+              input {
+                font-size: 270%;
+              }
+              
 
             }
         </style>
@@ -67,7 +77,8 @@
             <br />
         </div>
         <div id="div_userinfo" style="display: flex" class="wrapper">
-            <div border="1px solid black" style="flex: 1">
+            <div border="1px solid black" style="flex: 1;
+    display: flex;">
                 <input
                     style="display: none"
                     type="text"
@@ -137,9 +148,9 @@
                 >
                     <input
                         type="text"
-                        style="width: 100%"
+                        style="width: 100% ;margin-right: 10px;"
                         id="text_message_for_send"
-                    /><input type="submit" value="Send message" />
+                    /><input type="submit" style="margin-left: 10px;"value="Send message" />
                 </form>
                 <textarea
                     id="textarea_message_received"
