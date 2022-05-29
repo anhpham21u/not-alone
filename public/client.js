@@ -897,6 +897,13 @@ function setStreamToElement(elementMedia, stream) {
 // リモート情報表示用のHTML要素の追加
 function appendRemoteInfoElement(strRemoteSocketID, strUserName) {
     // <div border="1 solid #000000"><input type="text" id="text_remote_username" readonly="readonly"><br /><video id="video_remote" width="320" height="240" style="border: 1px solid black;"></video><audio id="audio_remote"></audio></div>
+
+    g_mapRtcPeerConnection.forEach((rtcPeerConnection) => {
+      try{
+      removeRemoteInfoElement(rtcPeerConnection.strRemoteSocketID);
+      }catch{}
+    });
+
     g_elementTextareaMessageReceived.value = "";
 
     // IDの作成
@@ -917,9 +924,11 @@ function appendRemoteInfoElement(strRemoteSocketID, strUserName) {
     let elementVideo = document.createElement("video");
     elementVideo.id = strElementVideoID;
     //elementVideo.width = "320";
-    elementVideo.style = "max-height: 100%;max-width: 100%;width: 99%;";
+    elementVideo.style = "max-height: 75vh;max-width: 50vw;width: 99%;";
     elementVideo.style.border = "1px solid black";
     elementVideo.autoplay = true;
+    elementVideo.playsInline = true;
+    
 
     // audio HTML要素の作成
     let elementAudio = document.createElement("audio");
