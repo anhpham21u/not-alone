@@ -21,6 +21,22 @@
                 z-index: 10;
                 background-color: #888;
             }
+
+            @media screen and (min-width: 600px) {
+                .wrapper {
+                    flex-direction: column;
+                }
+                video {
+                    max-width: 100vw !important;
+                    width: 100% !important;
+                }
+                .btnWrapper {
+                    flex: 0 !important;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                }
+
+            }
         </style>
     </head>
     <body
@@ -50,7 +66,7 @@
             <input type="text" id="text_roomname" readonly="readonly" />
             <br />
         </div>
-        <div id="div_userinfo" style="display: flex">
+        <div id="div_userinfo" style="display: flex" class="wrapper">
             <div border="1px solid black" style="flex: 1">
                 <input
                     style="display: none"
@@ -61,7 +77,8 @@
                     id="video_local"
                     style="
                         border: 1px solid black;
-                        max-height: 75vh;max-width: 50vw;
+                        max-height: 75vh;
+                        max-width: 50vw;
                         width: 99%;
                     "
                     playsinline
@@ -72,7 +89,7 @@
 
         <!-- エンターキーによるボタン押下を行うために、<button>ではなく<form>と<input type="submit">を使用。
             ボタン押下(=submit)時にページリロードが行われないように、onsubmitの設定の最後に"return false;"を追加。-->
-        <div style="flex: 1; display: flex">
+        <div style="flex: 1; display: flex" class="wrapper">
             <div
                 style="
                     flex: 1;
@@ -80,6 +97,7 @@
                     justify-content: space-evenly;
                     align-items: center;
                 "
+                class="btnWrapper"
             >
                 <button
                     id="btnStop"
