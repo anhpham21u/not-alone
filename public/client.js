@@ -2,7 +2,7 @@
 
 // ↓↓↓グローバル変数↓↓↓
 
-const g_btnStart = document.getElementById("btnStart");
+const g_btnJoin = document.getElementById("btnJoin");
 const g_btnStop = document.getElementById("btnStop");
 const g_btnNext = document.getElementById("btnNext");
 
@@ -61,7 +61,7 @@ window.addEventListener("beforeunload", async (event) => {
 
 // 「Join」ボタンを押すと呼ばれる関数
 function onsubmitButton_Join() {
-    g_btnStart.disabled = true;
+    g_btnJoin.disabled = true;
     g_btnNext.disabled = false;
     g_btnStop.disabled = false;
 
@@ -81,7 +81,7 @@ function onsubmitButton_Join() {
     g_elementTextRoomName.value = strRoomName;
 
     // サーバーに"join"を送信
-    console.log("- Send 'Join' to server");
+    console.log("- Gửi kết nối join đến server");
     g_socket.emit("join", { roomname: strRoomName });
 }
 
@@ -237,7 +237,7 @@ function onsubmitButton_SendMessage() {
 
 // 「Leave Chat.」ボタンを押すと呼ばれる関数
 async function onclickButton_LeaveChat() {
-    g_btnStart.disabled = false;
+    g_btnJoin.disabled = false;
     g_btnNext.disabled = true;
     g_btnStop.disabled = true;
 
@@ -986,7 +986,7 @@ const leavePromise = () =>
     });
 
 async function onclickButton_Next() {
-    g_btnStart.disabled = true;
+    g_btnJoin.disabled = true;
     g_btnNext.disabled = false;
     g_btnStop.disabled = false;
 
