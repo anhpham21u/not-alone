@@ -1,11 +1,11 @@
-"use strict"; // 厳格モードとする
+"use strict"; // Module
 
 // モジュール
 const express = require("express");
 const http = require("http");
 const socketIO = require("socket.io");
 
-// オブジェクト
+// Đối tượng
 const app = express();
 const server = http.Server(app);
 
@@ -18,20 +18,20 @@ const server = http.Server(app);
 
 const io = socketIO(server);
 
-// 定数
+// Hằng số
 const PORT = process.env.PORT || 1337;
 
-// 接続時の処理
-// ・サーバーとクライアントの接続が確立すると、
-// 　サーバー側で、"connection"イベント
-// 　クライアント側で、"connect"イベントが発生する
+// Xử lý khi kết nối
+// ・Khi kết nối giữa máy chủ và máy khách được thiết lập,
+// ở phía máy chủ, sự kiện "connection" xảy ra
+// ở phía máy khách, sự kiện "connect" xảy ra
 io.on("connection", (socket) => {
     console.log("connection : ", socket.id);
     socket.data.connected = false;
     socket.data.available = false;
 
-    // 切断時の処理
-    // ・クライアントが切断したら、サーバー側では"disconnect"イベントが発生する
+    // Xử lý khi mất kết nối
+    // ・Khi máy khách mất kết nối, ở phía máy chủ, sự kiện "disconnect" sẽ xảy ra
     socket.on("disconnect", async () => {
         console.log("disconnect : ", socket.id);
 
@@ -52,17 +52,17 @@ io.on("connection", (socket) => {
 
     });
 
-    // signalingデータ受信時の処理
-    // ・クライアント側のsignalingデータ送信「socket.emit( "signaling", objData );」に対する処理
+    // Xử lý khi nhận dữ liệu signaling
+    // ・Xử lý đối với dữ liệu signaling được gửi từ máy khách bằng cách sử dụng "socket.emit( "signaling", objData );" từ phía máy khách.
     socket.on("signaling", (objData) => {
         console.log("signaling : ", socket.id);
         console.log("- type : ", objData.type);
 
-        // 指定の相手に送信
+        // Gửi đến đối tác được chỉ định
         if ("to" in objData) {
             socket.data.connected = true;
             console.log("- to : ", objData.to);
-            // 送信元SocketIDを送信データに付与し、指定の相手に送信
+            // Gửi dữ liệu kèm theo SocketID nguồn đến đối tác được chỉ định
             objData.from = socket.id;
             socket.to(objData.to).emit("signaling", objData);
         } else {
@@ -70,21 +70,21 @@ io.on("connection", (socket) => {
         }
     });
 
-    // ビデオチャット参加時の処理
+    // Xử lý khi tham gia cuộc trò chuyện video
     socket.on("join", async (objData) => {
         await join(socket);
     });
 
-    // ビデオチャット離脱時の処理
+    // Xử lý khi rời khỏi cuộc trò chuyện video
     socket.on("leave", async (objData) => {
         console.log("leave : ", socket.id);
         let strRoomName;
         if (socket.data.strRoomName) {
             console.log("- Room name = ", socket.data.strRoomName);
             strRoomName = socket.data.strRoomName;
-            // ルームからの退室
+            // Xử lý rời khỏi phòng
             socket.leave(socket.data.strRoomName);
-            // socketオブジェクトのルーム名のクリア
+            // Xóa tên phòng từ đối tượng socket
             socket.data.strRoomName = "";
             socket.data.connected = false;
             socket.data.available = false;
@@ -102,10 +102,10 @@ io.on("connection", (socket) => {
     });
 });
 
-// 公開フォルダの指定
+// Chỉ định thư mục công khai
 app.use(express.static(__dirname + "/public"));
 
-// サーバーの起動
+// Khởi động máy chủ
 server.listen(PORT, () => {
     console.log("Server on port %d", PORT);
 });
@@ -151,13 +151,13 @@ const join = async (socket) => {
 
     console.log("- Room name = ", strRoomName);
 
-    // ルームへの入室
+    // Tham gia phòng
     socket.join(strRoomName);
-    // ルーム名をsocketオブジェクトのメンバーに追加
+    // Thêm tên phòng vào thành viên của đối tượng socket
     socket.data.strRoomName = strRoomName;
 
-    // 「join」を同じルームの送信元以外の全員に送信
-    // 送信元SocketIDを送信データに付与し、同じルームの送信元以外の全員に送信
+    // Gửi "join" cho tất cả mọi người trong phòng trừ người gửi
+    // Gửi kèm theo SocketID nguồn trong dữ liệu gửi và gửi cho tất cả mọi người trong phòng trừ người gửi.
     socket.broadcast
         .to(strRoomName)
         .emit("signaling", { from: socket.id, type: "join" });

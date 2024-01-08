@@ -1,0 +1,10 @@
+version: "3"
+services:
+  server-admin:
+    build: .
+    volumes:
+      - ./:/app
+    restart: unless-stopped
+    ports:
+      - "1337:1337"
+    command: 'node server.js'
