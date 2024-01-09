@@ -4,7 +4,7 @@
 
 const g_btnJoin = document.getElementById("btnJoin");
 const g_btnStop = document.getElementById("btnStop");
-const g_btnNext = document.getElementById("btnNext");
+// const g_btnNext = document.getElementById("btnNext");
 
 
 
@@ -41,7 +41,7 @@ const g_socket = io.connect();
 // ↓↓↓UIから呼ばれる関数↓↓↓
 
 window.addEventListener("load", (event) => {
-    g_btnNext.disabled = true;
+    // g_btnNext.disabled = true;
     g_btnStop.disabled = true;
     
     onclickCheckbox_CameraMicrophone();
@@ -62,7 +62,7 @@ window.addEventListener("beforeunload", async (event) => {
 // 「Join」ボタンを押すと呼ばれる関数
 function onsubmitButton_Join() {
     g_btnJoin.disabled = true;
-    g_btnNext.disabled = false;
+    // g_btnNext.disabled = false;
     g_btnStop.disabled = false;
 
     console.log("UI Event : 'Join' button clicked.");
@@ -238,7 +238,7 @@ function onsubmitButton_SendMessage() {
 // 「Leave Chat.」ボタンを押すと呼ばれる関数
 async function onclickButton_LeaveChat() {
     g_btnJoin.disabled = false;
-    g_btnNext.disabled = true;
+    // g_btnNext.disabled = true;
     g_btnStop.disabled = true;
 
     console.log("UI Event : 'Leave Chat.' button clicked.");
@@ -987,11 +987,11 @@ const leavePromise = () =>
         g_socket.emit("leave", "");
     });
 
-async function onclickButton_Next() {
-    g_btnJoin.disabled = true;
-    g_btnNext.disabled = false;
-    g_btnStop.disabled = false;
+// async function onclickButton_Next() {
+//     g_btnJoin.disabled = true;
+//     g_btnNext.disabled = false;
+//     g_btnStop.disabled = false;
 
-    await onclickButton_LeaveChat();
-    onsubmitButton_Join();
-}
+//     await onclickButton_LeaveChat();
+//     onsubmitButton_Join();
+// }
