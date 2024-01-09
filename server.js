@@ -121,33 +121,35 @@ const join = async (socket) => {
     let strRoomName;
 
     console.log(users.length)
-    for (let i = 0; i < users.length; i++) {
-        const user = users[i];
-        if ( user.data.available == true && user.data.connected == false && user.id != socket.id && socket.data.viewedId != user.id) {
-            wattingUser = user;
-            socket.data.viewedId = wattingUser.id;
-            socket.data.connected = true;
 
-            wattingUser.data.viewedId = socket.id;
-            wattingUser.data.connected = true;
+    // Bỏ tìm kiếm người chờ phòng, luôn lấy người ở cuối trong danh sách các users
 
-            break;
-        }
-    }
+    // for (let i = 0; i < users.length; i++) {
+    //     const user = users[i];
+    //     if ( user.data.available == true && user.data.connected == false && user.id != socket.id && socket.data.viewedId != user.id) {
+    //         console.log('ndma,sndmasndmand,amdn,mandasmd')
+    //         wattingUser = user;
+    //         socket.data.viewedId = wattingUser.id;
+    //         socket.data.connected = true;
 
-    if (wattingUser) {
-        // found wattingUser
-        if (wattingUser.data.strRoomName) {
-            // found wattingUser have room
-            strRoomName = wattingUser.data.strRoomName;
-        } else {
-            // found wattingUser have not room
-            // impossiable
-        }
-    } else {
-        // not found wattingUser
-        strRoomName = Math.random().toString();
-    }
+    //         wattingUser.data.viewedId = socket.id;
+    //         wattingUser.data.connected = true;
+
+    //         break;
+    //     }
+    // }
+
+    const user = users[users.length - 1];
+    wattingUser = user;
+    socket.data.viewedId = wattingUser.id;
+    socket.data.connected = true;
+
+    wattingUser.data.viewedId = socket.id;
+    wattingUser.data.connected = true;
+
+    // Tìm kiếm người đang chờ trong phòng nào đó
+    // nếu không có ai thì tự tạo 1 cái random name cho phòng
+    strRoomName = wattingUser ? wattingUser.data.strRoomName : Math.random().toString();
 
     console.log("- Room name = ", strRoomName);
 

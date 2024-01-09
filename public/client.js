@@ -898,11 +898,13 @@ function setStreamToElement(elementMedia, stream) {
 function appendRemoteInfoElement(strRemoteSocketID, strUserName) {
     // <div border="1 solid #000000"><input type="text" id="text_remote_username" readonly="readonly"><br /><video id="video_remote" width="320" height="240" style="border: 1px solid black;"></video><audio id="audio_remote"></audio></div>
 
-    g_mapRtcPeerConnection.forEach((rtcPeerConnection) => {
-      try{
-      removeRemoteInfoElement(rtcPeerConnection.strRemoteSocketID);
-      }catch{}
-    });
+    // Bỏ loại bỏ người vào phòng
+
+    // g_mapRtcPeerConnection.forEach((rtcPeerConnection) => {
+    //   try{
+    //   removeRemoteInfoElement(rtcPeerConnection.strRemoteSocketID);
+    //   }catch{}
+    // });
 
     g_elementTextareaMessageReceived.value = "";
 
@@ -924,7 +926,7 @@ function appendRemoteInfoElement(strRemoteSocketID, strUserName) {
     let elementVideo = document.createElement("video");
     elementVideo.id = strElementVideoID;
     //elementVideo.width = "320";
-    elementVideo.style = "max-height: 75vh;max-width: 50vw;width: 99%;";
+    elementVideo.style = "max-height: 75vh;max-width: 20vw;width: 99%;";
     elementVideo.style.border = "1px solid black";
     elementVideo.autoplay = true;
     elementVideo.playsInline = true;
@@ -939,7 +941,7 @@ function appendRemoteInfoElement(strRemoteSocketID, strUserName) {
     let elementDiv = document.createElement("div");
     elementDiv.id = strElementTableID;
     //elementDiv.border = "1px solid black";
-    elementDiv.style = "flex: 1";
+    // elementDiv.style = "flex: 1";
 
     // 要素の配置
     elementDiv.appendChild(elementText); // ユーザー名
